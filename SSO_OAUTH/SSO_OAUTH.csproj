@@ -6,10 +6,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <RootNamespace>UiTests.SignIn</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.4"/>
+        <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.0"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="NUnit" Version="4.3.2"/>
@@ -18,10 +20,32 @@
         <PackageReference Include="Selenium.Support" Version="4.40.0" />
         <PackageReference Include="Selenium.WebDriver" Version="4.40.0" />
         <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="145.0.7632.7600" />
+        <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.36.0" />
+        <PackageReference Include="Selenium.WebDriver.MSEdgeDriver" Version="145.0.3800.58" />
     </ItemGroup>
 
     <ItemGroup>
         <Using Include="NUnit.Framework"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="AppSettings.json" />
+      <Content Include="AppSettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Environment.json" />
+      <Content Include="Environment.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Data\TestData.json" />
+      <Content Include="Data\TestData.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ApiTests\" />
+      <Folder Include="DB\" />
     </ItemGroup>
 
 </Project>
