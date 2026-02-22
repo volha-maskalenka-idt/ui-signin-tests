@@ -22,7 +22,7 @@ namespace SSO_OAUTH.Helpers
             return data[environment];
         }
 
-        public static TestData GetUserTestData()
+        public static TestData GetTestData()
         {
             var json = File.ReadAllText("Data/TestData.json");
 
