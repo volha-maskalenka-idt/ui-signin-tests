@@ -16,8 +16,7 @@ namespace SsoOAuth.BaseClasses
 
         public static void Init()
         {
-            var settings = AppSettings.Load();
-            var browser = settings.browser;
+            var browser = ConfigurationHelper.GetSetting("browser");
 
             switch (browser.ToLower())
             {

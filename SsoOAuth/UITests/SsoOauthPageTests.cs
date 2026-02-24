@@ -1,5 +1,6 @@
 ﻿using SsoOAuth.BaseClasses;
 using SsoOAuth.Data;
+using SsoOAuth.Helpers;
 using SsoOAuth.Steps;
 
 namespace SsoOAuth.Tests
@@ -12,20 +13,20 @@ namespace SsoOAuth.Tests
         [SetUp]
         public void Setup()
         {
-            WebDriverFactory.Init();
+            WebDriverHelper.Init();
             _ssoOAuthPageSteps = new SsoOAuthPageSteps();
         }
         
         [TearDown]
         public void TearDown()
         {
-            WebDriverFactory.Quit();
+            WebDriverHelper.Quit();
         }
 
         [Test]
         public void LoginWithoutPassword_Should_ShowRequiredError()
         {
-            var username = Credentials.Load("qa").username;
+            var username = EnvironmentManager.Load("qa").username;
             var password = "";
             
             _ssoOAuthPageSteps.NavigateToBaseUrl();

@@ -15,7 +15,7 @@ namespace SsoOAuth.Steps
         }
         public void NavigateToBaseUrl()
         {
-            var baseUrl = AppSettings.Load().baseUrl;
+            var baseUrl = ConfigurationHelper.GetSetting("baseUrl");
             WebDriverHelper.NavigateTo(baseUrl);
         }
         

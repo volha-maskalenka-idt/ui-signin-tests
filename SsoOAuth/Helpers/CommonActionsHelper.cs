@@ -7,16 +7,14 @@ namespace SsoOAuth.Helpers
 {
     public static class CommonActionsHelper
     {
-        private static IWebDriver Driver => WebDriverFactory.Driver;
-
         private static WebDriverWait Wait =>
-            new WebDriverWait(Driver, TimeSpan.FromSeconds(5));
+            new WebDriverWait(WebDriverFactory.Driver, TimeSpan.FromSeconds(5));
 
         public static void EnterText(By locator, string text)
         {
             Wait.Until(ExpectedConditions.ElementIsVisible(locator));
 
-            var element = Driver.FindElement(locator);
+            var element = WebDriverFactory.Driver.FindElement(locator);
             element.Clear();
             element.SendKeys(text);
         }
@@ -24,7 +22,7 @@ namespace SsoOAuth.Helpers
         public static void Click(By locator)
         {
             Wait.Until(ExpectedConditions.ElementToBeClickable(locator));
-            Driver.FindElement(locator).Click();
+            WebDriverFactory.Driver.FindElement(locator).Click();
         }
 
         public static bool IsElementDisplayed(By locator)
@@ -32,7 +30,7 @@ namespace SsoOAuth.Helpers
             try
             {
                 Wait.Until(ExpectedConditions.ElementIsVisible(locator));
-                return Driver.FindElement(locator).Displayed;
+                return WebDriverFactory.Driver.FindElement(locator).Displayed;
             }
             catch
             {
@@ -43,7 +41,7 @@ namespace SsoOAuth.Helpers
         public static string GetText(By locator)
         {
             Wait.Until(ExpectedConditions.ElementIsVisible(locator));
-            return Driver.FindElement(locator).Text;
+            return WebDriverFactory.Driver.FindElement(locator).Text;
         }
     }
 }

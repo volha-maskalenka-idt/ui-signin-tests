@@ -2,7 +2,7 @@
 
 namespace SsoOAuth.Data
 {
-    public class Environment : Dictionary<string, Credentials>
+    public class Environment : Dictionary<string, EnvironmentManager>
     {
     }
 }

@@ -5,27 +5,29 @@ namespace SsoOAuth.Helpers
 {
     public static class WebDriverHelper
     {
-        private static IWebDriver Driver => WebDriverFactory.Driver;
-
         public static void NavigateTo(string url)
         {
-            Driver.Navigate().GoToUrl(url);
+            WebDriverFactory.Driver.Navigate().GoToUrl(url);
         }
-
-        public static void CloseAndQuit()
+        
+        public static void Init()
         {
-            Driver.Close();
-            Driver.Quit();
+            WebDriverFactory.Init();
         }
-
+        
+        public static void Quit()
+        {
+            WebDriverFactory.Quit();
+        }
+        
         public static string GetCurrentUrl()
         {
-            return Driver.Url;
+            return WebDriverFactory.Driver.Url;
         }
 
         public static string GetTitle()
         {
-            return Driver.Title;
+            return WebDriverFactory.Driver.Title;
         }
     }
 }
