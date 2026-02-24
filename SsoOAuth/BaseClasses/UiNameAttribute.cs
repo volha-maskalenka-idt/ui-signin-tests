@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SSO_OAUTH.BaseClasses
+namespace SsoOAuth.BaseClasses
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class UiNameAttribute : Attribute

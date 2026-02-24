@@ -30,15 +30,15 @@
 
     <ItemGroup>
       <None Remove="AppSettings.json" />
-      <Content Include="AppSettings.json">
+      <Content Include="appsettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Environment.json" />
-      <Content Include="Environment.json">
+      <Content Include="environment.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Data\TestData.json" />
-      <Content Include="Data\TestData.json">
+      <Content Include="Data\testdata.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
