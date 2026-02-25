@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiTests.SignIn", "UiTests.SignIn\UiTests.SignIn.csproj", "{53C8FAD2-3E18-4D7F-BEAA-3A75612B4FC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsoOAuth", "SsoOAuth\SsoOAuth.csproj", "{53C8FAD2-3E18-4D7F-BEAA-3A75612B4FC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
