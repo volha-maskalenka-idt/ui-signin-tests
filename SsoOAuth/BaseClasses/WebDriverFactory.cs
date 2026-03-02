@@ -45,5 +45,10 @@ namespace SsoOAuth.BaseClasses
             _driver.Value?.Dispose();
             _driver.Value = null;
         }
+        
+        public static void Close()
+        {
+            _driver.Value?.Close();
+        }
     }
 }

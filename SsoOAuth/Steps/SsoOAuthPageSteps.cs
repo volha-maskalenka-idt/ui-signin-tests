@@ -9,9 +9,12 @@ namespace SsoOAuth.Steps
     public class SsoOAuthPageSteps
     {
         private readonly IBasePage _page;
-        public SsoOAuthPageSteps()
+        private readonly SoftAssert _softAssert;
+
+        public SsoOAuthPageSteps(SoftAssert softAssert)
         {
-            _page = new SsoOauthPage();
+            _page = new SsoOAuthPage();
+            _softAssert = softAssert;
         }
         public void NavigateToBaseUrl()
         {
@@ -21,48 +24,41 @@ namespace SsoOAuth.Steps
         
         public void EnterUsername(string username)
         {
-            CommonActionsHelper.EnterText(_page.GetLocator("Username"),
-                username);
+            CommonActionsHelper.EnterText(_page, "Username", username);
         }
         
         public void EnterPassword(string password)
         {
-            CommonActionsHelper.EnterText(
-                _page.GetLocator("Password"), password);
+            CommonActionsHelper.EnterText(_page, "Password", password);
         }
 
         public void ClickLogin()
         {
-            CommonActionsHelper.Click(
-                _page.GetLocator("LoginButton"));
+            CommonActionsHelper.Click(_page,"LoginButton");
         }
 
         public void ClickCancel()
         {
-            CommonActionsHelper.Click(
-                _page.GetLocator("CancelButton"));
+            CommonActionsHelper.Click(_page,"CancelButton");
         }
 
         public void ClickGoogleLogin()
         {
-            CommonActionsHelper.Click(
-                _page.GetLocator("GoogleLoginButton"));
+            CommonActionsHelper.Click(_page,"GoogleLoginButton");
         }
 
         public void VerifyPasswordRequiredError()
         {
-            Assert.That(
-                CommonActionsHelper.IsElementDisplayed(
-                    _page.GetLocator("PasswordRequiredError")),
-                Is.True,"Password required error was not displayed.");
+            _softAssert.True(
+                CommonActionsHelper.IsElementDisplayed(_page,"PasswordRequiredError"),
+                "Password required error was not displayed.");
         }
 
         public void VerifyUsernameRequiredError()
         {
-            Assert.That(
-                CommonActionsHelper.IsElementDisplayed(
-                    _page.GetLocator("UsernameRequiredError")),
-                Is.True,"Username required error was not displayed.");
+            _softAssert.True(
+                CommonActionsHelper.IsElementDisplayed(_page,"UsernameRequiredError" ),
+                "Username required error was not displayed.");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+﻿/*using System.Text.Json;
 
 namespace SsoOAuth.Data
 {
@@ -20,4 +20,4 @@ namespace SsoOAuth.Data
             return environments[environment];
         }
     }
-}
+}*/

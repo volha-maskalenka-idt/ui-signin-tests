@@ -2,38 +2,44 @@
 using SsoOAuth.Data;
 using SsoOAuth.Helpers;
 using SsoOAuth.Steps;
+using EnvironmentManager = SsoOAuth.BaseClasses.EnvironmentManager;
 
 namespace SsoOAuth.Tests
 {
     [TestFixture]
     public class SsoOauthPageTests
     {
-        private SsoOAuthPageSteps _ssoOAuthPageSteps;
+        private SsoOAuthPageSteps _steps;
+        private SoftAssert _softAssert;
 
         [SetUp]
         public void Setup()
         {
             WebDriverHelper.Init();
-            _ssoOAuthPageSteps = new SsoOAuthPageSteps();
+            _softAssert = new SoftAssert();
+            _steps = new SsoOAuthPageSteps(_softAssert);
         }
         
         [TearDown]
         public void TearDown()
         {
-            WebDriverHelper.Quit();
+            WebDriverHelper.CloseAndQuit();
         }
 
         [Test]
         public void LoginWithoutPassword_Should_ShowRequiredError()
         {
-            var username = EnvironmentManager.Load("qa").username;
+            var username = EnvironmentManager.GetUser("qa").Username;
             var password = "";
             
-            _ssoOAuthPageSteps.NavigateToBaseUrl();
-            _ssoOAuthPageSteps.EnterUsername(username);
-            _ssoOAuthPageSteps.EnterPassword(password);
-            _ssoOAuthPageSteps.ClickLogin();
-            _ssoOAuthPageSteps.VerifyPasswordRequiredError();
+            _steps.NavigateToBaseUrl();
+            _steps.EnterUsername(username);
+            _steps.EnterPassword(password);
+            _steps.ClickLogin();
+            
+            _steps.VerifyPasswordRequiredError();
+            
+            _softAssert.AssertAll();
         }
     }
 }

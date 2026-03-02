@@ -3,9 +3,8 @@ using SsoOAuth.BaseClasses;
 
 namespace SsoOAuth.Pages
 {
-    public class SsoOauthPage : IBasePage
+    public class SsoOAuthPage : IBasePage
     {
-
         [UiName("Username")] 
         private static By UsernameInputLocator => By.Id("Username");
 

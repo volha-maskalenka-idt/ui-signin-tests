@@ -7,30 +7,42 @@ namespace SsoOAuth.Helpers
 {
     public static class CommonActionsHelper
     {
-        private static WebDriverWait Wait =>
-            new WebDriverWait(WebDriverFactory.Driver, TimeSpan.FromSeconds(5));
 
-        public static void EnterText(By locator, string text)
+        public static void EnterText(IBasePage page, string locatorName, string text, int timeout = 5)
         {
-            Wait.Until(ExpectedConditions.ElementIsVisible(locator));
+            var locator = page.GetLocator(locatorName);
 
-            var element = WebDriverFactory.Driver.FindElement(locator);
+            WebDriverHelper.CreateWait(timeout).Until(
+                ExpectedConditions.ElementIsVisible(locator));
+
+            var element = WebDriverHelper.FindElement(locator);
+
             element.Clear();
             element.SendKeys(text);
         }
 
-        public static void Click(By locator)
+        public static void Click(IBasePage page, string locatorName, int timeout = 5)
         {
-            Wait.Until(ExpectedConditions.ElementToBeClickable(locator));
-            WebDriverFactory.Driver.FindElement(locator).Click();
+            var locator = page.GetLocator(locatorName);
+
+            WebDriverHelper.CreateWait(timeout).Until(
+                ExpectedConditions.ElementToBeClickable(locator));
+
+            WebDriverHelper.FindElement(locator).Click();
         }
 
-        public static bool IsElementDisplayed(By locator)
+        public static bool IsElementDisplayed(IBasePage page, string locatorName, int timeout = 5)
         {
             try
             {
-                Wait.Until(ExpectedConditions.ElementIsVisible(locator));
-                return WebDriverFactory.Driver.FindElement(locator).Displayed;
+                var locator = page.GetLocator(locatorName);
+
+                WebDriverHelper.CreateWait(timeout).Until(
+                    ExpectedConditions.ElementIsVisible(locator));
+
+                return WebDriverHelper
+                    .FindElement(locator)
+                    .Displayed;
             }
             catch
             {
@@ -38,10 +50,14 @@ namespace SsoOAuth.Helpers
             }
         }
 
-        public static string GetText(By locator)
+        public static string GetText(IBasePage page, string locatorName, int timeout = 5)
         {
-            Wait.Until(ExpectedConditions.ElementIsVisible(locator));
-            return WebDriverFactory.Driver.FindElement(locator).Text;
+            var locator = page.GetLocator(locatorName);
+
+            WebDriverHelper.CreateWait(timeout).Until(
+                ExpectedConditions.ElementIsVisible(locator));
+
+            return WebDriverHelper.FindElement(locator).Text;
         }
     }
 }
