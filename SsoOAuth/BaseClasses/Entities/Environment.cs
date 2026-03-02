@@ -2,7 +2,7 @@
 
 namespace SsoOAuth.BaseClasses.Entities
 {
-    public class TestEnvironment
+    public class Environment
     {
         public string Name { get; set; }
 

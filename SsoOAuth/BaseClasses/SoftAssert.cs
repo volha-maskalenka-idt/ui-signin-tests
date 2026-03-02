@@ -7,45 +7,45 @@ namespace SsoOAuth.BaseClasses
 {
     public class SoftAssert
     {
-        private readonly List<string> _failures = new();
+        private static List<string> _failures = new();
 
-        public void True(bool condition, string message = null)
+        public static void True(bool condition, string message = null)
         {
             if (!condition)
                 _failures.Add(message ?? "Expected: True, but was: False.");
         }
 
-        public void False(bool condition, string message = null)
+        public static void False(bool condition, string message = null)
         {
             if (condition)
                 _failures.Add(message ?? "Expected: False, but was: True.");
         }
 
-        public void AreEqual<T>(T expected, T actual, string message = null)
+        public static void AreEqual<T>(T expected, T actual, string message = null)
         {
             if (!Equals(expected, actual))
                 _failures.Add(message ?? $"Expected: {expected}, but was: {actual}.");
         }
 
-        public void AreNotEqual<T>(T notExpected, T actual, string message = null)
+        public static void AreNotEqual<T>(T notExpected, T actual, string message = null)
         {
             if (Equals(notExpected, actual))
                 _failures.Add(message ?? $"Did not expect: {notExpected}, but was: {actual}.");
         }
 
-        public void NotNull(object obj, string message = null)
+        public static void NotNull(object obj, string message = null)
         {
             if (obj == null)
                 _failures.Add(message ?? "Expected: not null, but was: null.");
         }
 
-        public void IsNull(object obj, string message = null)
+        public static void IsNull(object obj, string message = null)
         {
             if (obj != null)
                 _failures.Add(message ?? "Expected: null, but was not null.");
         }
         
-        public void AreEntitiesEqual<T>(
+        public static void AreEntitiesEqual<T>(
             T expected,
             T actual,
             Func<T, T, bool> comparer,
@@ -59,7 +59,7 @@ namespace SsoOAuth.BaseClasses
                     $"Entities are not equal. Expected: {expected}, Actual: {actual}.");
         }
 
-        public void AssertAll()
+        public static void AssertAll()
         {
             if (!_failures.Any())
                 return;
@@ -76,7 +76,7 @@ namespace SsoOAuth.BaseClasses
                 $"SoftAssert found {failureCount} failure(s):{Environment.NewLine}{aggregatedMessage}");
         }
 
-        public void Reset()
+        public static void Reset()
         {
             _failures.Clear();
         }

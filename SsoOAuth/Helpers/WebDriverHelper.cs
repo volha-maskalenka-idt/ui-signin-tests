@@ -6,11 +6,9 @@ namespace SsoOAuth.Helpers
 {
     public static class WebDriverHelper
     {
-        private static IWebDriver Driver => WebDriverFactory.Driver;
-        
         public static void NavigateTo(string url)
         {
-            Driver.Navigate().GoToUrl(url);
+            WebDriverFactory.Driver.Navigate().GoToUrl(url);
         }
         
         public static void Init()
@@ -25,38 +23,38 @@ namespace SsoOAuth.Helpers
         
         public static string GetCurrentUrl()
         {
-            return Driver.Url;
+            return WebDriverFactory.Driver.Url;
         }
 
         public static string GetTitle()
         {
-            return Driver.Title;
+            return WebDriverFactory.Driver.Title;
         }
         
         public static void Refresh()
         {
-            Driver.Navigate().Refresh();
+            WebDriverFactory.Driver.Navigate().Refresh();
         }
         
         public static void Maximise()
         {
-            Driver.Manage().Window.Maximize();
+            WebDriverFactory.Driver.Manage().Window.Maximize();
         }
         
         public static void SwitchToFrame(int index)
         {
-            Driver.SwitchTo().Frame(index);
+            WebDriverFactory.Driver.SwitchTo().Frame(index);
         }
         
         public static void SwitchToFrame(string frameNameOrId)
         {
-            Driver.SwitchTo().Frame(frameNameOrId);
+            WebDriverFactory.Driver.SwitchTo().Frame(frameNameOrId);
         }
         
         public static void SwitchToFrame(By locator)
         {
-            var frameElement = Driver.FindElement(locator);
-            Driver.SwitchTo().Frame(frameElement);
+            var frameElement = WebDriverFactory.Driver.FindElement(locator);
+            WebDriverFactory.Driver.SwitchTo().Frame(frameElement);
         }
         
         public static void SwitchToDefaultContent()
@@ -73,7 +71,7 @@ namespace SsoOAuth.Helpers
         
         public static IWebElement FindElement(By locator)
         {
-            return Driver.FindElement(locator);
+            return WebDriverFactory.Driver.FindElement(locator);
         }
     }
 }

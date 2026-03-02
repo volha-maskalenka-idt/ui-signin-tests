@@ -8,13 +8,11 @@ namespace SsoOAuth.Steps
 {
     public class SsoOAuthPageSteps
     {
-        private readonly IBasePage _page;
-        private readonly SoftAssert _softAssert;
+        private readonly SsoOAuthPage _page;
 
-        public SsoOAuthPageSteps(SoftAssert softAssert)
+        public SsoOAuthPageSteps()
         {
             _page = new SsoOAuthPage();
-            _softAssert = softAssert;
         }
         public void NavigateToBaseUrl()
         {
@@ -49,16 +47,80 @@ namespace SsoOAuth.Steps
 
         public void VerifyPasswordRequiredError()
         {
-            _softAssert.True(
+            SoftAssert.True(
                 CommonActionsHelper.IsElementDisplayed(_page,"PasswordRequiredError"),
                 "Password required error was not displayed.");
+            SoftAssert.True(
+                CommonActionsHelper.IsElementDisplayed(_page,"PasswordRequiredErrorUnderField" ),
+                "Username required error under field was not displayed.");
+        }
+        
+        public void VerifyPasswordRequiredErrorIsNotDisplayed()
+        {
+            SoftAssert.False(
+                CommonActionsHelper.IsElementDisplayed(_page,"PasswordRequiredError"),
+                "Password required error was not displayed.");
+            SoftAssert.False(
+                CommonActionsHelper.IsElementDisplayed(_page,"PasswordRequiredErrorUnderField" ),
+                "Username required error under field was not displayed.");
         }
 
         public void VerifyUsernameRequiredError()
         {
-            _softAssert.True(
+            SoftAssert.True(
                 CommonActionsHelper.IsElementDisplayed(_page,"UsernameRequiredError" ),
                 "Username required error was not displayed.");
+            SoftAssert.True(
+                CommonActionsHelper.IsElementDisplayed(_page,"UsernameRequiredErrorUnderField" ),
+                "Username required error under field was not displayed.");
+        }
+        
+        public void VerifyUsernameRequiredErrorIsNotDisplayed()
+        {
+            SoftAssert.False(
+                CommonActionsHelper.IsElementDisplayed(_page,"UsernameRequiredError" ),
+                "Username required error was not displayed.");
+            SoftAssert.False(
+                CommonActionsHelper.IsElementDisplayed(_page,"UsernameRequiredErrorUnderField" ),
+                "Username required error under field was not displayed.");
+        }
+
+        public void VerifySinginDropdownIsDisplayed()
+        {
+            SoftAssert.True(
+                CommonActionsHelper.IsElementDisplayed(_page, "SingInDropdown"),
+                "SingIn dropdown was not displayed.");
+        }
+        
+        public void VerifySinginDropdownIsNotDisplayed()
+        {
+            SoftAssert.False(
+                CommonActionsHelper.IsElementDisplayed(_page, "SingInDropdown"),
+                "SingIn dropdown is displayed.");
+        }
+
+        public void VerifyUrlIsTheSame()
+        {
+            SoftAssert.AreEqual(
+                WebDriverHelper.GetCurrentUrl(), ConfigurationHelper.GetSetting("baseUrl"),
+                "Invalid Url");
+        }
+        
+        public void VerifyUrlChanched()
+        {
+            SoftAssert.False(CommonActionsHelper.IsElementDisplayed(_page, "Username"),
+                "Url still visible");
+            SoftAssert.AreNotEqual(
+                WebDriverHelper.GetCurrentUrl(), ConfigurationHelper.GetSetting("baseUrl"),
+                "Url didn't change");
+        }
+        
+
+        public void VerifyAuthenticationFailedError()
+        {
+            SoftAssert.True(
+                CommonActionsHelper.IsElementDisplayed(_page,"AuthenticationFailedError" ),
+                "Authentication failed error was not displayed.");
         }
     }
 }

@@ -2,7 +2,6 @@
 using SsoOAuth.Data;
 using SsoOAuth.Helpers;
 using SsoOAuth.Steps;
-using EnvironmentManager = SsoOAuth.BaseClasses.EnvironmentManager;
 
 namespace SsoOAuth.Tests
 {
@@ -10,14 +9,12 @@ namespace SsoOAuth.Tests
     public class SsoOauthPageTests
     {
         private SsoOAuthPageSteps _steps;
-        private SoftAssert _softAssert;
 
         [SetUp]
         public void Setup()
         {
             WebDriverHelper.Init();
-            _softAssert = new SoftAssert();
-            _steps = new SsoOAuthPageSteps(_softAssert);
+            _steps = new SsoOAuthPageSteps();
         }
         
         [TearDown]
@@ -27,7 +24,57 @@ namespace SsoOAuth.Tests
         }
 
         [Test]
-        public void LoginWithoutPassword_Should_ShowRequiredError()
+        public void ValidLogin_ShouldNavigateToAnotherPage()
+        {
+            var username = EnvironmentManager.GetUser("qa").Username;
+            var password = EnvironmentManager.GetUser("qa").Password;
+            
+            _steps.NavigateToBaseUrl();
+            _steps.EnterUsername(username);
+            _steps.EnterPassword(password);
+            _steps.ClickLogin();
+
+            _steps.VerifyUrlChanched();
+            
+            SoftAssert.AssertAll();
+        }
+
+        [Test]
+        public void LoginWithEmptyFields_ShouldDisplayBothRequiredErrors()
+        {
+            var username = "";
+            var password = "";
+            
+            _steps.NavigateToBaseUrl();
+            _steps.EnterUsername(username);
+            _steps.EnterPassword(password);
+            _steps.ClickLogin();
+
+            _steps.VerifyUsernameRequiredError();
+            _steps.VerifyPasswordRequiredError();
+            
+            SoftAssert.AssertAll();
+        }
+        
+        [Test]
+        public void LoginWithoutUsername_ShouldDisplayUsernameRequiredErrorOnly()
+        {
+            var username = "";
+            var password = EnvironmentManager.GetUser("qa").Password;
+            
+            _steps.NavigateToBaseUrl();
+            _steps.EnterUsername(username);
+            _steps.EnterPassword(password);
+            _steps.ClickLogin();
+            
+            _steps.VerifyUsernameRequiredError();
+            _steps.VerifyPasswordRequiredErrorIsNotDisplayed();
+            
+            SoftAssert.AssertAll();
+        }
+        
+        [Test]
+        public void LoginWithoutPassword_ShouldDisplayPasswordRequiredErrorOnly()
         {
             var username = EnvironmentManager.GetUser("qa").Username;
             var password = "";
@@ -38,8 +85,37 @@ namespace SsoOAuth.Tests
             _steps.ClickLogin();
             
             _steps.VerifyPasswordRequiredError();
+            _steps.VerifyUsernameRequiredErrorIsNotDisplayed();
             
-            _softAssert.AssertAll();
+            SoftAssert.AssertAll();
+        }
+
+        [Test]
+        public void LoginWithInvalidPassword_ShouldShowAuthenticationFailedError()
+        {
+            var username = EnvironmentManager.GetUser("qa").Username;
+            var password = "1";
+            
+            _steps.NavigateToBaseUrl();
+            _steps.EnterUsername(username);
+            _steps.EnterPassword(password);
+            _steps.ClickLogin();
+            
+            _steps.VerifyAuthenticationFailedError();
+            _steps.VerifyUrlIsTheSame();
+            
+            SoftAssert.AssertAll();
+        }
+
+        [Test]
+        public void ClickCancle_ShouldNavigateToAnotherPage()
+        {
+            _steps.NavigateToBaseUrl();
+            _steps.ClickCancel();
+            
+            _steps.VerifyUrlChanched();
+            
+            SoftAssert.AssertAll();
         }
     }
 }

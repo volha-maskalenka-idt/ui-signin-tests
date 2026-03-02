@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Extensions.Configuration;
 using SsoOAuth.BaseClasses.Entities;
+using Environment = SsoOAuth.BaseClasses.Entities.Environment;
 
 namespace SsoOAuth.BaseClasses
 {
@@ -25,11 +26,11 @@ namespace SsoOAuth.BaseClasses
                    ?? throw new Exception($"Failed to bind environment '{environmentName}' to User.");
         }
         
-        public static TestEnvironment GetEnvironment(string environmentName)
+        public static Environment GetEnvironment(string environmentName)
         {
             var environments = EnvironmentConfigurationBuilder()
                 .GetSection("Environments")
-                .Get<List<TestEnvironment>>();
+                .Get<List<Environment>>();
 
             if (environments == null || !environments.Any())
                 throw new Exception("No environments found in configuration.");
