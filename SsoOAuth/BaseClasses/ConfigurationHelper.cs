@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace SsoOAuth.Data
+namespace SsoOAuth.BaseClasses
 {
     public static class ConfigurationHelper
     {

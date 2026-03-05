@@ -20,7 +20,7 @@ namespace SsoOAuth.Pages
         [UiName("GoogleLoginButton")] 
         private static By GoogleLoginButtonLocator => By.CssSelector("img[alt=Google]");
         
-        [UiName("UsernameRequiredError")]
+        [UiName("UsernameRequiredGlobalError")]
         private static By UsernameRequiredErrorLocator =>
             By.XPath("//div[contains(@class,'alert-danger')]//li[contains(text(),'Username')]");
         
@@ -28,7 +28,7 @@ namespace SsoOAuth.Pages
         private static By UsernameRequiredErrorUnderFieldLocator =>
             By.CssSelector("span.field-validation-error[data-valmsg-for=\"Username\"]");
 
-        [UiName("PasswordRequiredError")]
+        [UiName("PasswordRequiredGlobalError")]
         private static By PasswordRequiredErrorLocator =>
             By.XPath("//div[contains(@class,'alert-danger')]//li[contains(text(),'Password')]");
         

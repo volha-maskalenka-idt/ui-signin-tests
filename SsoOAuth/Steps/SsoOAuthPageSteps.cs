@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
 using SsoOAuth.BaseClasses;
-using SsoOAuth.Data;
 using SsoOAuth.Helpers;
 using SsoOAuth.Pages;
 
@@ -30,97 +29,52 @@ namespace SsoOAuth.Steps
             CommonActionsHelper.EnterText(_page, "Password", password);
         }
 
-        public void ClickLogin()
+        public void Click(string locatorName)
         {
-            CommonActionsHelper.Click(_page,"LoginButton");
+            CommonActionsHelper.Click(_page,locatorName);
         }
 
-        public void ClickCancel()
+        public void VerifyUrlChanged()
         {
-            CommonActionsHelper.Click(_page,"CancelButton");
-        }
+            var actual = CommonActionsHelper.IsElementDisplayed(_page, "Username", 2);
+            SoftAssert.False(actual);
 
-        public void ClickGoogleLogin()
-        {
-            CommonActionsHelper.Click(_page,"GoogleLoginButton");
-        }
-
-        public void VerifyPasswordRequiredError()
-        {
-            SoftAssert.True(
-                CommonActionsHelper.IsElementDisplayed(_page,"PasswordRequiredError"),
-                "Password required error was not displayed.");
-            SoftAssert.True(
-                CommonActionsHelper.IsElementDisplayed(_page,"PasswordRequiredErrorUnderField" ),
-                "Username required error under field was not displayed.");
+            var expected = ConfigurationHelper.GetSetting("baseUrl");
+            var actualUrl = WebDriverHelper.GetCurrentUrl();
+            SoftAssert.AreNotEqual(expected, actualUrl);
         }
         
-        public void VerifyPasswordRequiredErrorIsNotDisplayed()
+        public void VerifyCurrentUrlIsTheSame()
         {
-            SoftAssert.False(
-                CommonActionsHelper.IsElementDisplayed(_page,"PasswordRequiredError"),
-                "Password required error was not displayed.");
-            SoftAssert.False(
-                CommonActionsHelper.IsElementDisplayed(_page,"PasswordRequiredErrorUnderField" ),
-                "Username required error under field was not displayed.");
-        }
-
-        public void VerifyUsernameRequiredError()
-        {
-            SoftAssert.True(
-                CommonActionsHelper.IsElementDisplayed(_page,"UsernameRequiredError" ),
-                "Username required error was not displayed.");
-            SoftAssert.True(
-                CommonActionsHelper.IsElementDisplayed(_page,"UsernameRequiredErrorUnderField" ),
-                "Username required error under field was not displayed.");
+            var expected = ConfigurationHelper.GetSetting("baseUrl");
+            var actual = WebDriverHelper.GetCurrentUrl();
+            SoftAssert.AreEqual(expected, actual);
         }
         
-        public void VerifyUsernameRequiredErrorIsNotDisplayed()
+        public void VerifyElementTextIsCorrect(string locatorName, string textOfError)
         {
-            SoftAssert.False(
-                CommonActionsHelper.IsElementDisplayed(_page,"UsernameRequiredError" ),
-                "Username required error was not displayed.");
-            SoftAssert.False(
-                CommonActionsHelper.IsElementDisplayed(_page,"UsernameRequiredErrorUnderField" ),
-                "Username required error under field was not displayed.");
-        }
-
-        public void VerifySinginDropdownIsDisplayed()
-        {
-            SoftAssert.True(
-                CommonActionsHelper.IsElementDisplayed(_page, "SingInDropdown"),
-                "SingIn dropdown was not displayed.");
+            var expected = textOfError;
+            var actual = CommonActionsHelper.GetText(_page, locatorName);
+            SoftAssert.AreEqual(expected, actual);
         }
         
-        public void VerifySinginDropdownIsNotDisplayed()
+        public void VerifyElementContainsText(string locatorName, string expectedText)
         {
-            SoftAssert.False(
-                CommonActionsHelper.IsElementDisplayed(_page, "SingInDropdown"),
-                "SingIn dropdown is displayed.");
-        }
-
-        public void VerifyUrlIsTheSame()
-        {
-            SoftAssert.AreEqual(
-                WebDriverHelper.GetCurrentUrl(), ConfigurationHelper.GetSetting("baseUrl"),
-                "Invalid Url");
+            var expected = expectedText;
+            var actual = CommonActionsHelper.GetText(_page, locatorName);
+            SoftAssert.True(actual.Contains(expected));
         }
         
-        public void VerifyUrlChanched()
+        public void VerifyElementIsDisplayed(string locatorName)
         {
-            SoftAssert.False(CommonActionsHelper.IsElementDisplayed(_page, "Username"),
-                "Url still visible");
-            SoftAssert.AreNotEqual(
-                WebDriverHelper.GetCurrentUrl(), ConfigurationHelper.GetSetting("baseUrl"),
-                "Url didn't change");
+            var actual = CommonActionsHelper.IsElementDisplayed(_page, locatorName);
+            SoftAssert.True(actual);
         }
-        
 
-        public void VerifyAuthenticationFailedError()
+        public void VerifyElementIsNotDisplayed(string locatorName)
         {
-            SoftAssert.True(
-                CommonActionsHelper.IsElementDisplayed(_page,"AuthenticationFailedError" ),
-                "Authentication failed error was not displayed.");
+            var actual = CommonActionsHelper.IsElementDisplayed(_page, locatorName);
+            SoftAssert.False(actual);
         }
     }
 }

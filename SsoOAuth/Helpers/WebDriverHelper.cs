@@ -6,11 +6,7 @@ namespace SsoOAuth.Helpers
 {
     public static class WebDriverHelper
     {
-        public static void NavigateTo(string url)
-        {
-            WebDriverFactory.Driver.Navigate().GoToUrl(url);
-        }
-        
+        public static Application App => WebDriverFactory.App;
         public static void Init()
         {
             WebDriverFactory.Init();
@@ -19,6 +15,21 @@ namespace SsoOAuth.Helpers
         {
             WebDriverFactory.Close();
             WebDriverFactory.Quit();
+        }
+        
+        public static void NavigateTo(string url)
+        {
+            WebDriverFactory.Navigate().GoToUrl(url);
+        }
+
+        public static void NavigateBack()
+        {
+            WebDriverFactory.Navigate().Back();
+        }
+        
+        public static void Refresh()
+        {
+            WebDriverFactory.Navigate().Refresh();
         }
         
         public static string GetCurrentUrl()
@@ -31,47 +42,39 @@ namespace SsoOAuth.Helpers
             return WebDriverFactory.Driver.Title;
         }
         
-        public static void Refresh()
+        public static void Maximize()
         {
-            WebDriverFactory.Driver.Navigate().Refresh();
-        }
-        
-        public static void Maximise()
-        {
-            WebDriverFactory.Driver.Manage().Window.Maximize();
+            WebDriverFactory.Maximize();
         }
         
         public static void SwitchToFrame(int index)
         {
-            WebDriverFactory.Driver.SwitchTo().Frame(index);
+            WebDriverFactory.SwitchTo().Frame(index);
         }
-        
+
         public static void SwitchToFrame(string frameNameOrId)
         {
-            WebDriverFactory.Driver.SwitchTo().Frame(frameNameOrId);
+            WebDriverFactory.SwitchTo().Frame(frameNameOrId);
         }
-        
+
         public static void SwitchToFrame(By locator)
         {
-            var frameElement = WebDriverFactory.Driver.FindElement(locator);
-            WebDriverFactory.Driver.SwitchTo().Frame(frameElement);
+            WebDriverFactory.SwitchTo().Frame(WebDriverFactory.Driver.FindElement(locator));
         }
-        
+
         public static void SwitchToDefaultContent()
         {
-            WebDriverFactory.Driver.SwitchTo().DefaultContent();
+            WebDriverFactory.SwitchTo().DefaultContent();
         }
-        
-        public static WebDriverWait CreateWait(int timeout)
+
+        public static void SwitchToWindow(string windowHandle)
         {
-            return new WebDriverWait(
-                WebDriverFactory.Driver,
-                TimeSpan.FromSeconds(timeout));
+            WebDriverFactory.SwitchTo().Window(windowHandle);
         }
-        
-        public static IWebElement FindElement(By locator)
+
+        public static void SwitchToAlert()
         {
-            return WebDriverFactory.Driver.FindElement(locator);
+            WebDriverFactory.SwitchTo().Alert();
         }
     }
 }

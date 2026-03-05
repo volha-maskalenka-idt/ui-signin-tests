@@ -1,26 +1,26 @@
 ﻿using SsoOAuth.BaseClasses;
-using SsoOAuth.Data;
 using SsoOAuth.Helpers;
 using SsoOAuth.Steps;
 
 namespace SsoOAuth.Tests
 {
     [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class SsoOauthPageTests
     {
-        private SsoOAuthPageSteps _steps;
-
+        private SsoOAuthPageSteps _ssoOAuthPageSteps;
+        
         [SetUp]
         public void Setup()
         {
-            WebDriverHelper.Init();
-            _steps = new SsoOAuthPageSteps();
+            WebDriverHelper.Init(); 
+            _ssoOAuthPageSteps = WebDriverHelper.App.SsoOAuthPageSteps;
         }
-        
+
         [TearDown]
         public void TearDown()
         {
-            WebDriverHelper.CloseAndQuit();
+            WebDriverHelper.CloseAndQuit(); 
         }
 
         [Test]
@@ -28,94 +28,133 @@ namespace SsoOAuth.Tests
         {
             var username = EnvironmentManager.GetUser("qa").Username;
             var password = EnvironmentManager.GetUser("qa").Password;
-            
-            _steps.NavigateToBaseUrl();
-            _steps.EnterUsername(username);
-            _steps.EnterPassword(password);
-            _steps.ClickLogin();
 
-            _steps.VerifyUrlChanched();
-            
-            SoftAssert.AssertAll();
+            _ssoOAuthPageSteps.NavigateToBaseUrl();
+            _ssoOAuthPageSteps.EnterUsername(username);
+            _ssoOAuthPageSteps.EnterPassword(password);
+            _ssoOAuthPageSteps.Click("LoginButton");
+
+            _ssoOAuthPageSteps.VerifyUrlChanged();
         }
 
         [Test]
-        public void LoginWithEmptyFields_ShouldDisplayBothRequiredErrors()
+        public void LoginWithEmptyFields_GlobalErrorShouldContainUsernameAndPasswordErrors()
         {
-            var username = "";
-            var password = "";
+            _ssoOAuthPageSteps.NavigateToBaseUrl();
+            _ssoOAuthPageSteps.EnterUsername("");
+            _ssoOAuthPageSteps.EnterPassword("");
+            _ssoOAuthPageSteps.Click("LoginButton");
             
-            _steps.NavigateToBaseUrl();
-            _steps.EnterUsername(username);
-            _steps.EnterPassword(password);
-            _steps.ClickLogin();
-
-            _steps.VerifyUsernameRequiredError();
-            _steps.VerifyPasswordRequiredError();
-            
-            SoftAssert.AssertAll();
+            _ssoOAuthPageSteps.VerifyElementTextIsCorrect("UsernameRequiredGlobalError",
+                "The Username field is required.");
+            _ssoOAuthPageSteps.VerifyElementTextIsCorrect("PasswordRequiredGlobalError",
+                "The Password field is required.");
         }
         
         [Test]
-        public void LoginWithoutUsername_ShouldDisplayUsernameRequiredErrorOnly()
+        public void LoginWithEmptyFields_ErrorsShouldPresentUnderUsernameAndPasswordFields()
         {
-            var username = "";
+            _ssoOAuthPageSteps.NavigateToBaseUrl();
+            _ssoOAuthPageSteps.EnterUsername("");
+            _ssoOAuthPageSteps.EnterPassword("");
+            _ssoOAuthPageSteps.Click("LoginButton");
+            
+            _ssoOAuthPageSteps.VerifyElementTextIsCorrect("UsernameRequiredErrorUnderField",
+                "The Username field is required.");
+            _ssoOAuthPageSteps.VerifyElementTextIsCorrect("PasswordRequiredErrorUnderField",
+                "The Password field is required.");
+        }
+        
+        [Test]
+        public void LoginWithEmptyUsername_GlobalErrorShouldPresent()
+        {
             var password = EnvironmentManager.GetUser("qa").Password;
+
+            _ssoOAuthPageSteps.NavigateToBaseUrl();
+            _ssoOAuthPageSteps.EnterUsername("");
+            _ssoOAuthPageSteps.EnterPassword(password);
+            _ssoOAuthPageSteps.Click("LoginButton");
             
-            _steps.NavigateToBaseUrl();
-            _steps.EnterUsername(username);
-            _steps.EnterPassword(password);
-            _steps.ClickLogin();
-            
-            _steps.VerifyUsernameRequiredError();
-            _steps.VerifyPasswordRequiredErrorIsNotDisplayed();
-            
-            SoftAssert.AssertAll();
+            _ssoOAuthPageSteps.VerifyElementTextIsCorrect("UsernameRequiredGlobalError", 
+                "The Username field is required.");
         }
         
         [Test]
-        public void LoginWithoutPassword_ShouldDisplayPasswordRequiredErrorOnly()
+        public void LoginWithEmptyUsername_ErrorUnderFieldShouldPresent()
+        {
+            var password = EnvironmentManager.GetUser("qa").Password;
+
+            _ssoOAuthPageSteps.NavigateToBaseUrl();
+            _ssoOAuthPageSteps.EnterUsername("");
+            _ssoOAuthPageSteps.EnterPassword(password);
+            _ssoOAuthPageSteps.Click("LoginButton");
+
+            _ssoOAuthPageSteps.VerifyElementTextIsCorrect("UsernameRequiredErrorUnderField", 
+                "The Username field is required.");
+        }
+        
+        [Test]
+        public void LoginWithEmptyPassword_GlobalErrorShouldPresent()
         {
             var username = EnvironmentManager.GetUser("qa").Username;
-            var password = "";
-            
-            _steps.NavigateToBaseUrl();
-            _steps.EnterUsername(username);
-            _steps.EnterPassword(password);
-            _steps.ClickLogin();
-            
-            _steps.VerifyPasswordRequiredError();
-            _steps.VerifyUsernameRequiredErrorIsNotDisplayed();
-            
-            SoftAssert.AssertAll();
-        }
 
+            _ssoOAuthPageSteps.NavigateToBaseUrl();
+            _ssoOAuthPageSteps.EnterUsername(username);
+            _ssoOAuthPageSteps.EnterPassword("");
+            _ssoOAuthPageSteps.Click("LoginButton");
+            
+            _ssoOAuthPageSteps.VerifyElementTextIsCorrect("PasswordRequiredGlobalError", 
+                "The Password field is required.");
+        }
+        
         [Test]
-        public void LoginWithInvalidPassword_ShouldShowAuthenticationFailedError()
+        public void LoginWithEmptyPassword_ErrorUnderFieldShouldPresent()
         {
             var username = EnvironmentManager.GetUser("qa").Username;
-            var password = "1";
-            
-            _steps.NavigateToBaseUrl();
-            _steps.EnterUsername(username);
-            _steps.EnterPassword(password);
-            _steps.ClickLogin();
-            
-            _steps.VerifyAuthenticationFailedError();
-            _steps.VerifyUrlIsTheSame();
-            
-            SoftAssert.AssertAll();
-        }
 
+            _ssoOAuthPageSteps.NavigateToBaseUrl();
+            _ssoOAuthPageSteps.EnterUsername(username);
+            _ssoOAuthPageSteps.EnterPassword("");
+            _ssoOAuthPageSteps.Click("LoginButton");
+
+            _ssoOAuthPageSteps.VerifyElementTextIsCorrect("PasswordRequiredErrorUnderField", 
+                "The Password field is required.");
+        }
+        
         [Test]
-        public void ClickCancle_ShouldNavigateToAnotherPage()
+        public void LoginWithInvalidPassword_AuthenticationFailedErrorShouldPresent()
         {
-            _steps.NavigateToBaseUrl();
-            _steps.ClickCancel();
+            var username = EnvironmentManager.GetUser("qa").Username;
+
+            _ssoOAuthPageSteps.NavigateToBaseUrl();
+            _ssoOAuthPageSteps.EnterUsername(username);
+            _ssoOAuthPageSteps.EnterPassword("invalid");
+            _ssoOAuthPageSteps.Click("LoginButton");
             
-            _steps.VerifyUrlChanched();
-            
-            SoftAssert.AssertAll();
+            _ssoOAuthPageSteps.VerifyElementTextIsCorrect("AuthenticationFailedError", 
+                "Authentication failed. Invalid username or password.");
+        }
+        
+        [Test]
+        public void LoginWithInvalidPassword_UrlShouldRemainTheSame()
+        {
+            var username = EnvironmentManager.GetUser("qa").Username;
+
+            _ssoOAuthPageSteps.NavigateToBaseUrl();
+            _ssoOAuthPageSteps.EnterUsername(username);
+            _ssoOAuthPageSteps.EnterPassword("invalid");
+            _ssoOAuthPageSteps.Click("LoginButton");
+
+            _ssoOAuthPageSteps.VerifyCurrentUrlIsTheSame();
+        }
+        
+        [Test]
+        public void ClickCancel_ShouldNavigateToAnotherPage()
+        {
+            _ssoOAuthPageSteps.NavigateToBaseUrl();
+            _ssoOAuthPageSteps.Click("CancelButton");
+
+            _ssoOAuthPageSteps.VerifyUrlChanged();
         }
     }
 }
