@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace SsoOAuth.Data
+namespace SsoOAuth.BaseClasses
 {
     public static class ConfigurationHelper
     {
@@ -8,7 +8,8 @@ namespace SsoOAuth.Data
         {
             return new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables()
                 .Build();
         }
 

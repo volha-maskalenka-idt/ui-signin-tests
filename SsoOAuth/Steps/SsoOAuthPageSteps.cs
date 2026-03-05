@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
 using SsoOAuth.BaseClasses;
-using SsoOAuth.Data;
 using SsoOAuth.Helpers;
 using SsoOAuth.Pages;
 
@@ -8,10 +7,11 @@ namespace SsoOAuth.Steps
 {
     public class SsoOAuthPageSteps
     {
-        private readonly IBasePage _page;
+        private readonly SsoOAuthPage _page;
+
         public SsoOAuthPageSteps()
         {
-            _page = new SsoOauthPage();
+            _page = new SsoOAuthPage();
         }
         public void NavigateToBaseUrl()
         {
@@ -21,48 +21,60 @@ namespace SsoOAuth.Steps
         
         public void EnterUsername(string username)
         {
-            CommonActionsHelper.EnterText(_page.GetLocator("Username"),
-                username);
+            CommonActionsHelper.EnterText(_page, "Username", username);
         }
         
         public void EnterPassword(string password)
         {
-            CommonActionsHelper.EnterText(
-                _page.GetLocator("Password"), password);
+            CommonActionsHelper.EnterText(_page, "Password", password);
         }
 
-        public void ClickLogin()
+        public void Click(string locatorName)
         {
-            CommonActionsHelper.Click(
-                _page.GetLocator("LoginButton"));
+            CommonActionsHelper.Click(_page,locatorName);
         }
 
-        public void ClickCancel()
+        public void VerifyUrlChanged()
         {
-            CommonActionsHelper.Click(
-                _page.GetLocator("CancelButton"));
+            var actual = CommonActionsHelper.IsElementDisplayed(_page, "Username", 2);
+            SoftAssert.False(actual);
+
+            var expected = ConfigurationHelper.GetSetting("baseUrl");
+            var actualUrl = WebDriverHelper.GetCurrentUrl();
+            SoftAssert.AreNotEqual(expected, actualUrl);
+        }
+        
+        public void VerifyCurrentUrlIsTheSame()
+        {
+            var expected = ConfigurationHelper.GetSetting("baseUrl");
+            var actual = WebDriverHelper.GetCurrentUrl();
+            SoftAssert.AreEqual(expected, actual);
+        }
+        
+        public void VerifyElementTextIsCorrect(string locatorName, string textOfError)
+        {
+            var expected = textOfError;
+            var actual = CommonActionsHelper.GetText(_page, locatorName);
+            SoftAssert.AreEqual(expected, actual);
+        }
+        
+        public void VerifyElementContainsText(string locatorName, string expectedText)
+        {
+            var expected = expectedText;
+            var actual = CommonActionsHelper.GetText(_page, locatorName);
+            SoftAssert.True(actual.Contains(expected));
+        }
+        
+        public void VerifyElementIsDisplayed(string locatorName)
+        {
+            var actual = CommonActionsHelper.IsElementDisplayed(_page, locatorName);
+            SoftAssert.True(actual);
         }
 
-        public void ClickGoogleLogin()
+        public void VerifyElementIsNotDisplayed(string locatorName)
         {
-            CommonActionsHelper.Click(
-                _page.GetLocator("GoogleLoginButton"));
-        }
-
-        public void VerifyPasswordRequiredError()
-        {
-            Assert.That(
-                CommonActionsHelper.IsElementDisplayed(
-                    _page.GetLocator("PasswordRequiredError")),
-                Is.True,"Password required error was not displayed.");
-        }
-
-        public void VerifyUsernameRequiredError()
-        {
-            Assert.That(
-                CommonActionsHelper.IsElementDisplayed(
-                    _page.GetLocator("UsernameRequiredError")),
-                Is.True,"Username required error was not displayed.");
+            var actual = CommonActionsHelper.IsElementDisplayed(_page, locatorName);
+            SoftAssert.False(actual);
         }
     }
 }

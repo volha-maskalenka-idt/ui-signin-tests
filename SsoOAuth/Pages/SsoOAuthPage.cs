@@ -3,9 +3,8 @@ using SsoOAuth.BaseClasses;
 
 namespace SsoOAuth.Pages
 {
-    public class SsoOauthPage : IBasePage
+    public class SsoOAuthPage : IBasePage
     {
-
         [UiName("Username")] 
         private static By UsernameInputLocator => By.Id("Username");
 
@@ -21,12 +20,24 @@ namespace SsoOAuth.Pages
         [UiName("GoogleLoginButton")] 
         private static By GoogleLoginButtonLocator => By.CssSelector("img[alt=Google]");
         
-        [UiName("UsernameRequiredError")]
+        [UiName("UsernameRequiredGlobalError")]
         private static By UsernameRequiredErrorLocator =>
             By.XPath("//div[contains(@class,'alert-danger')]//li[contains(text(),'Username')]");
+        
+        [UiName("UsernameRequiredErrorUnderField")]
+        private static By UsernameRequiredErrorUnderFieldLocator =>
+            By.CssSelector("span.field-validation-error[data-valmsg-for=\"Username\"]");
 
-        [UiName("PasswordRequiredError")]
+        [UiName("PasswordRequiredGlobalError")]
         private static By PasswordRequiredErrorLocator =>
             By.XPath("//div[contains(@class,'alert-danger')]//li[contains(text(),'Password')]");
+        
+        [UiName("PasswordRequiredErrorUnderField")]
+        private static By PasswordRequiredErrorUnderFieldLocator =>
+            By.CssSelector("span.field-validation-error[data-valmsg-for=\"Password\"]");
+        
+        [UiName("AuthenticationFailedError")]
+        private static By AuthenticationFailedErrorLocator =>
+            By.XPath("//div[contains(@class, 'validation-summary-errors')]//li[contains(text(), 'Authentication failed')]");
     }
 }
