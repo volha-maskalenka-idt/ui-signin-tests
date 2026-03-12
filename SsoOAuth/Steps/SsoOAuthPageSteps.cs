@@ -19,14 +19,9 @@ namespace SsoOAuth.Steps
             WebDriverHelper.NavigateTo(baseUrl);
         }
         
-        public void EnterUsername(string username)
+        public void FillField(string fieldLocator,string text)
         {
-            CommonActionsHelper.EnterText(_page, "Username", username);
-        }
-        
-        public void EnterPassword(string password)
-        {
-            CommonActionsHelper.EnterText(_page, "Password", password);
+            CommonActionsHelper.EnterText(_page, fieldLocator, text);
         }
 
         public void Click(string locatorName)

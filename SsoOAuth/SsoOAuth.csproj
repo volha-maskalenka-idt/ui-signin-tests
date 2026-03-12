@@ -22,6 +22,7 @@
         <PackageReference Include="NUnit" Version="4.3.2"/>
         <PackageReference Include="NUnit.Analyzers" Version="4.7.0"/>
         <PackageReference Include="NUnit3TestAdapter" Version="5.0.0"/>
+        <PackageReference Include="RestSharp" Version="114.0.0" />
         <PackageReference Include="Selenium.Support" Version="4.40.0" />
         <PackageReference Include="Selenium.WebDriver" Version="4.40.0" />
         <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="145.0.7632.7600" />
@@ -49,7 +50,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ApiTests\" />
       <Folder Include="DB\" />
     </ItemGroup>
 
