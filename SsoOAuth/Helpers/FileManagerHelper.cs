@@ -26,6 +26,12 @@ namespace SsoOAuth.Helpers
                    ?? throw new Exception("Failed to deserialize JSON.");
         }
         
+        public static string ReadRawJson(string fileName)
+        {
+            var fullPath = GetFullPath(fileName);
+            return File.ReadAllText(fullPath);
+        }
+        
         public static List<Dictionary<string, string>> ReadCsv(string fileName)
         {
             var fullPath = GetFullPath(fileName);

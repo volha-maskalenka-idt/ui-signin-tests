@@ -53,4 +53,11 @@
       <Folder Include="DB\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Data\SubscriberGroupsTestData.json" />
+      <Content Include="Data\SubscriberGroupsTestData.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

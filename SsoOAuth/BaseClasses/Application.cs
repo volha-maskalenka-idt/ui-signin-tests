@@ -1,7 +1,5 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
-using SsoOAuth.Steps;
 
 namespace SsoOAuth.BaseClasses
 {
@@ -24,7 +22,5 @@ namespace SsoOAuth.BaseClasses
             var locator = page.GetLocator(locatorName);
             return new UiElement(_driver.FindElement(locator));
         }
-        private SsoOAuthPageSteps _ssoOAuthPageSteps;
-        public SsoOAuthPageSteps SsoOAuthPageSteps => _ssoOAuthPageSteps ??= new SsoOAuthPageSteps();
     }
 }
