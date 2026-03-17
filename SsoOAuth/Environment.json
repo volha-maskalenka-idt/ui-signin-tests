@@ -1,6 +1,20 @@
 ﻿{
   "qa": {
-    "username": "vmaskalenka",
-    "password": "1324"
+    "user": {
+      "username": "vmaskalenka",
+      "password": "1324"
+    },
+    "DBs": [
+      {
+        "name": "Fireball",
+        "host": "abrams-01.som.idt.net",
+        "port": "1521",
+        "Service": "IMSQA",
+        "databaseName": "fireballdb",
+        "user": "FIREBALL",
+        "Password": "",
+        "Type": "Oracle"
+      }
+    ]
   }
 }

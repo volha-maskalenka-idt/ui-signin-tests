@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OpenQA.Selenium;
 using SsoOAuth.BaseClasses.Entities.API;
 
 namespace SsoOAuth.Helpers
@@ -14,6 +15,11 @@ namespace SsoOAuth.Helpers
             var json = FileManagerHelper.ReadRawJson("SubscriberGroupsTestData.json");
             _testData = JsonConvert.DeserializeObject<SubscriberGroupsList>(json);
             return _testData;
+        }
+        
+        public static ErrorResponseEntity GetErrorResponse(string errorKey)
+        {
+            return GetTestData().ErrorResponses[errorKey];
         }
 
         public static int GetTotalGroupsCount()

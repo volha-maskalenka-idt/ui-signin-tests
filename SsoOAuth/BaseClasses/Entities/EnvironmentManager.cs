@@ -17,7 +17,9 @@ namespace SsoOAuth.BaseClasses
         }
         public static User GetUser(string environmentName)
         {
-            var section = EnvironmentConfigurationBuilder().GetSection(environmentName);
+            var section = EnvironmentConfigurationBuilder()
+                .GetSection(environmentName)
+                .GetSection("user");
 
             if (!section.Exists())
                 throw new Exception($"Environment '{environmentName}' not found.");
@@ -51,12 +53,24 @@ namespace SsoOAuth.BaseClasses
                 .Apis
                 .First(a => a.Name == apiName);
         }
-
+        
         public static Database GetDatabase(string environmentName, string dbName)
         {
-            return GetEnvironment(environmentName)
-                .Databases
-                .First(d => d.Name == dbName);
+            var section = EnvironmentConfigurationBuilder()
+                .GetSection(environmentName)
+                .GetSection("DBs");
+
+            var databases = section.Get<List<Database>>()
+                            ?? throw new Exception($"No databases found for environment '{environmentName}'.");
+
+            return databases.First(d => d.Name == dbName)
+                   ?? throw new Exception($"Database '{dbName}' not found in environment '{environmentName}'.");
+        }
+        
+        public static string GetConnectionString(string environmentName, string dbName)
+        {
+            var db = GetDatabase(environmentName, dbName);
+            return $"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={db.Host})(PORT={db.Port}))(CONNECT_DATA=(SERVICE_NAME={db.Service})));User Id={db.User};Password={db.Password};";
         }
     }
 }

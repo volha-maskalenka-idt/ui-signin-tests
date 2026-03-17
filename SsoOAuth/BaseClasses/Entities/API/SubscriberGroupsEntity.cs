@@ -17,4 +17,5 @@ public class SubscriberGroupsEntity
 public class SubscriberGroupsList
 {
     public List<SubscriberGroupsEntity> GroupList { get; set; }
+    public Dictionary<string, ErrorResponseEntity> ErrorResponses { get; set; }
 }

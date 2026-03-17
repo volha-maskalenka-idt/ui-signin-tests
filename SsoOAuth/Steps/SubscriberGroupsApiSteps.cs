@@ -11,6 +11,8 @@ namespace SsoOAuth.Steps
     {
         private RestResponse _response;
         private string _content;
+        
+        public string GetContent() => _content;
 
         public void GetSubscriberGroupsFullListWithFollowingValues(List<(string key, string value)> queryParams)
         {
@@ -23,6 +25,21 @@ namespace SsoOAuth.Steps
             var expected = expectedStatus;
             var actual = _response.StatusDescription;
             SoftAssert.AreEqual(expected, actual);
+        }
+        
+        public void VerifyErrorResponse(ErrorResponseEntity expectedError)
+        {
+            var actual = JsonConvert.DeserializeObject<ErrorResponseEntity>(_content);
+
+            SoftAssert.AreEntitiesEqual(
+                expectedError,
+                actual,
+                (e, a) =>
+                    e.Type == a.Type &&
+                    e.Title == a.Title &&
+                    e.Status == a.Status &&
+                    e.Detail == a.Detail
+            );
         }
         
         public void VerifyResponseContainsText(string expectedText)
