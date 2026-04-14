@@ -230,7 +230,6 @@ namespace SsoOAuth.Tests
             _steps.VerifyResponseStatus("Bad Request");
             _steps.VerifyErrorResponse(expectedErrorBody);
         }
-
         
         [Test]
         public void CheckSubscriberGroups_WithInvalidGetAll_ShouldReturnBadRequestAndGetAllNotValidMessage()

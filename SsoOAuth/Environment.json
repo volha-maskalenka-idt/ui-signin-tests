@@ -15,6 +15,16 @@
         "Password": "",
         "Type": "Oracle"
       }
+    ],
+    "Apis": [
+      {
+        "Name": "FireballSubscriber",
+        "GrantType": "client_credentials",
+        "Scope": "29815",
+        "TokenUrl": "https://sf-sso-oauth-qa.idt.net",
+        "ClientId": "",
+        "ClientSecret": ""
+      }
     ]
   }
 }
