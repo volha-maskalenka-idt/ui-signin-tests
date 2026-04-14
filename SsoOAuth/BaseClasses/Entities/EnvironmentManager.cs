@@ -49,9 +49,14 @@ namespace SsoOAuth.BaseClasses
 
         public static Api GetApi(string environmentName, string apiName)
         {
-            return GetEnvironment(environmentName)
-                .Apis
-                .First(a => a.Name == apiName);
+            var section = EnvironmentConfigurationBuilder()
+                .GetSection(environmentName)
+                .GetSection("Apis");
+
+            var apis = section.Get<List<Api>>()
+                       ?? throw new Exception($"No APIs found for environment '{environmentName}'.");
+
+            return apis.First(a => a.Name == apiName);
         }
         
         public static Database GetDatabase(string environmentName, string dbName)
