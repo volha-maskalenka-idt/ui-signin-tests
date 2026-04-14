@@ -6,7 +6,8 @@ namespace SsoOAuth.Managers
 {
     public static class FireballApiManager
     {
-        private static readonly RestClient _apiClient = new RestClient(ConfigurationHelper.GetSetting("baseApiUrl"));
+        private static readonly string _baseUrl = ConfigurationHelper.GetSetting("baseApiUrl");
+        private static readonly RestClient _apiClient = ApiHelper.InstanceClient(_baseUrl);
         private const string ContentType = "application/json";
 
         public static RestResponse PostRequestWithAuth(string endpoint, string body)
