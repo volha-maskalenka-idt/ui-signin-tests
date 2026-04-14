@@ -48,5 +48,23 @@
                      gs.OPT_OUT_DT
               FROM GROUP_SUBSCRIBER gs
               WHERE gs.SUBSCRIBER_ID = {0}";
+
+        public static string GetAllLanguages =
+            @"SELECT LANGUAGE_DMN_ID, NAME, VALID_SMS_CHAR_SET
+              FROM FIREBALL.LANGUAGE_DMN";
+
+        public static string GetLanguageById =
+            @"SELECT LANGUAGE_DMN_ID, NAME, VALID_SMS_CHAR_SET
+              FROM FIREBALL.LANGUAGE_DMN
+              WHERE LANGUAGE_DMN_ID = {0}";
+
+        public static string GetAllMarketingChannels =
+            @"SELECT MARKETING_CHANNEL_DMN_ID, NAME, COUNTRY_ABBREVIATIONS
+              FROM FIREBALL.MARKETING_CHANNEL_DMN";
+
+        public static string GetMarketingChannelById =
+            @"SELECT MARKETING_CHANNEL_DMN_ID, NAME, COUNTRY_ABBREVIATIONS
+              FROM FIREBALL.MARKETING_CHANNEL_DMN
+              WHERE MARKETING_CHANNEL_DMN_ID = {0}";
     }
 }

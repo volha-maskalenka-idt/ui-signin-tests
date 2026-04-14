@@ -75,5 +75,66 @@ namespace SsoOAuth.DB.Tables
                 string.Format(Queries.GetGroupsByPhoneAndGroupIds, phone, groupIdsString));
             return MapToGroupsList(records);
         }
+
+        public static List<LanguageDbEntity> GetAllLanguages()
+        {
+            var records = DbConnectionHelper.GetData(EnvironmentName, DbName, Queries.GetAllLanguages);
+            return MapToLanguageList(records);
+        }
+
+        public static LanguageDbEntity? GetLanguageById(decimal id)
+        {
+            var records = DbConnectionHelper.GetData(EnvironmentName, DbName,
+                string.Format(Queries.GetLanguageById, id));
+            return records.Rows.Count == 0 ? null : MapToLanguageEntity(records.Rows[0]);
+        }
+
+        private static List<LanguageDbEntity> MapToLanguageList(DataTable records)
+        {
+            var result = new List<LanguageDbEntity>();
+            foreach (DataRow row in records.Rows)
+                result.Add(MapToLanguageEntity(row));
+            return result;
+        }
+
+        private static LanguageDbEntity MapToLanguageEntity(DataRow row)
+        {
+            return new LanguageDbEntity
+            {
+                Id = Convert.ToDecimal(row["LANGUAGE_DMN_ID"]),
+                Name = row["NAME"].ToString()!,
+                ValidSmsCharSet = row["VALID_SMS_CHAR_SET"] == DBNull.Value
+                    ? null
+                    : row["VALID_SMS_CHAR_SET"].ToString()
+            };
+        }
+
+        public static List<MarketingChannelDbEntity> GetAllMarketingChannels()
+        {
+            var records = DbConnectionHelper.GetData(EnvironmentName, DbName, Queries.GetAllMarketingChannels);
+            var result = new List<MarketingChannelDbEntity>();
+            foreach (DataRow row in records.Rows)
+                result.Add(MapMarketingChannelRow(row));
+            return result;
+        }
+
+        public static MarketingChannelDbEntity? GetMarketingChannelById(decimal id)
+        {
+            var records = DbConnectionHelper.GetData(EnvironmentName, DbName,
+                string.Format(Queries.GetMarketingChannelById, id));
+            return records.Rows.Count == 0 ? null : MapMarketingChannelRow(records.Rows[0]);
+        }
+
+        private static MarketingChannelDbEntity MapMarketingChannelRow(DataRow row)
+        {
+            return new MarketingChannelDbEntity
+            {
+                Id = Convert.ToDecimal(row["MARKETING_CHANNEL_DMN_ID"]),
+                Name = row["NAME"].ToString()!,
+                CountryAbbreviations = row["COUNTRY_ABBREVIATIONS"] == DBNull.Value
+                    ? null
+                    : row["COUNTRY_ABBREVIATIONS"].ToString()
+            };
+        }
     }
 }

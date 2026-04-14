@@ -3,6 +3,7 @@ using SsoOAuth.BaseClasses;
 using SsoOAuth.BaseClasses.Entities.API;
 using SsoOAuth.DB.Entities;
 using SsoOAuth.DB.Tables;
+using SsoOAuth.DB;
 
 namespace SsoOAuth.DB.Steps
 {
@@ -115,6 +116,66 @@ namespace SsoOAuth.DB.Steps
                     ? null
                     : DateTime.Parse(apiEntity.OptOutDt)
             };
+        }
+
+        public List<LanguageDbEntity> GetAllLanguages() =>
+            DbOperations.GetAllLanguages();
+
+        public List<LanguageDbEntity> GetLanguageById(decimal id)
+        {
+            var result = DbOperations.GetLanguageById(id);
+            return result != null ? new List<LanguageDbEntity> { result } : new List<LanguageDbEntity>();
+        }
+
+        public void VerifyLanguagesResponseMatchesDb(List<LanguageEntity> apiLanguages, List<LanguageDbEntity> dbLanguages, int totalCount)
+        {
+            SoftAssert.AreEqual(dbLanguages.Count, totalCount,
+                $"TotalCount mismatch. Expected: {dbLanguages.Count}, Actual: {totalCount}");
+
+            SoftAssert.AreEqual(dbLanguages.Count.ToString(), apiLanguages.Count.ToString(),
+                $"Languages count mismatch. Expected: {dbLanguages.Count}, Actual: {apiLanguages.Count}");
+
+            foreach (var dbLang in dbLanguages)
+            {
+                var apiLang = apiLanguages.FirstOrDefault(l => l.Id == dbLang.Id);
+                SoftAssert.NotNull(apiLang, $"Language with Id {dbLang.Id} ({dbLang.Name}) not found in response");
+
+                if (apiLang != null)
+                    SoftAssert.AreEqual(dbLang.Name, apiLang.Name,
+                        $"Language name mismatch for Id {dbLang.Id}. Expected: {dbLang.Name}, Actual: {apiLang.Name}");
+            }
+        }
+
+        public List<MarketingChannelDbEntity> GetAllMarketingChannels() =>
+            DbOperations.GetAllMarketingChannels();
+
+        public List<MarketingChannelDbEntity> GetMarketingChannelById(decimal id)
+        {
+            var result = DbOperations.GetMarketingChannelById(id);
+            return result != null ? new List<MarketingChannelDbEntity> { result } : new List<MarketingChannelDbEntity>();
+        }
+
+        public void VerifySearchMarketingChannelsResponseMatchesDb(
+            List<MarketingChannelDbEntity> db,
+            List<MarketingChannelDbEntity> response,
+            int totalCount)
+        {
+            SoftAssert.AreEqual(db.Count, totalCount,
+                $"TotalCount mismatch. Expected: {db.Count}, Actual: {totalCount}");
+
+            SoftAssert.AreEqual(db.Count, response.Count,
+                $"Items count mismatch. Expected: {db.Count}, Actual: {response.Count}");
+
+            foreach (var dbChannel in db)
+            {
+                var responseChannel = response.FirstOrDefault(c => c.Id == dbChannel.Id);
+                SoftAssert.NotNull(responseChannel,
+                    $"MarketingChannel with Id {dbChannel.Id} ({dbChannel.Name}) not found in response");
+
+                if (responseChannel != null)
+                    SoftAssert.AreEqual(dbChannel.Name, responseChannel.Name,
+                        $"Name mismatch for Id {dbChannel.Id}. Expected: {dbChannel.Name}, Actual: {responseChannel.Name}");
+            }
         }
     }
 }
